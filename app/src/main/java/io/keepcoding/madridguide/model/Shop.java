@@ -8,6 +8,8 @@ public class Shop {
     private String address;
     private String url;
     private String description;
+    private float latitude;
+    private float longitude;
 
     public Shop(long id, String name) {
         this.id = id;
@@ -71,5 +73,21 @@ public class Shop {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public float getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(float latitude) {
+        this.latitude = latitude;
+    }
+
+    public float getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(float longitude) {
+        this.longitude = longitude;
     }
 }

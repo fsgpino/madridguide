@@ -7,14 +7,15 @@ import java.util.List;
 
 import io.keepcoding.madridguide.model.Shop;
 import io.keepcoding.madridguide.model.Shops;
+import io.keepcoding.madridguide.util.MainThread;
 
 
 public class GetAllShopsInteractorFakeImpl implements GetAllShopsInteractor {
     @Override
-    public void execute(GetAllShopsInteractorResponse response) {
+    public void execute(final GetAllShopsInteractorResponse response) {
         List<Shop> data = getShops();
 
-        Shops sut = Shops.build(data);
+        final Shops sut = Shops.build(data);
 
         // simulate connection
         try {
@@ -23,7 +24,12 @@ public class GetAllShopsInteractorFakeImpl implements GetAllShopsInteractor {
             e.printStackTrace();
         }
 
-        response.response(sut);
+        MainThread.run(new Runnable() {
+            @Override
+            public void run() {
+                response.response(sut);
+            }
+        });
     }
 
     @NonNull

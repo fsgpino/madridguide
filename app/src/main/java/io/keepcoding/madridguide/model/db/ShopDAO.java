@@ -1,4 +1,4 @@
-package io.keepcoding.madridguide.model.db;
+package io.keepcoding.madridguide.manager.db;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,146 +8,144 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import java.lang.ref.WeakReference;
+import java.util.LinkedList;
+import java.util.List;
 
-import io.keepcoding.madridguide.manager.db.DBConstants;
-import io.keepcoding.madridguide.manager.db.DBHelper;
 import io.keepcoding.madridguide.model.Shop;
 
 import static io.keepcoding.madridguide.manager.db.DBConstants.*;
 
-public class ShopDAO implements DAOPersistable<Shop> {
-
-    public static final String[] allColumns = {
-            KEY_SHOP_ID,
-            KEY_SHOP_ADDRESS,
-            KEY_SHOP_IMG_URL,
-            KEY_SHOP_NAME
-
-    };
-
+public class ShopDAO implements io.keepcoding.madridguide.manager.db.DAOPersistable<Shop> {
     private WeakReference<Context> context;
+    private DBHelper dbHelper;
+    private SQLiteDatabase db;
 
-    public ShopDAO(@NonNull Context context) {
+    public ShopDAO(Context context, DBHelper dbHelper) {
         this.context = new WeakReference<Context>(context);
+        this.dbHelper = dbHelper;
+        this.db = dbHelper.getDB();
     }
 
+    public ShopDAO(Context context) {
+        this(context, DBHelper.getInstance(context));
+    }
+
+    /**
+     * Insert a shop in DB
+     * @param shop shouldn't be null
+     * @return 0 is shop is null, id if insert is OK, INVALID_ID if insert fails
+     */
     @Override
     public long insert(@NonNull Shop shop) {
         if (shop == null) {
             return 0;
         }
         // insert
-        DBHelper dbHelper = DBHelper.getInstance(context.get());
-        SQLiteDatabase db = dbHelper.getDB();
 
         db.beginTransaction();
         long id = DBHelper.INVALID_ID;
-        try {
-            id = dbHelper.getWritableDatabase().insert(DBConstants.TABLE_SHOP, null, this.getContentValues(shop));
+        try { // Null Column Hack
+            id = db.insert(TABLE_SHOP, KEY_SHOP_NAME, this.getContentValues(shop));
             shop.setId(id);
-            db.setTransactionSuccessful();
+            db.setTransactionSuccessful();  // COMMIT
         } finally {
             db.endTransaction();
         }
 
-        dbHelper.close();
-        dbHelper=null;
-
         return id;
     }
 
+    private ContentValues getContentValues(Shop shop) {
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(KEY_SHOP_ADDRESS, shop.getAddress());
+        contentValues.put(KEY_SHOP_DESCRIPTION, shop.getDescription());
+        contentValues.put(KEY_SHOP_IMAGE_URL, shop.getImageUrl());
+        contentValues.put(KEY_SHOP_LOGO_IMAGE_URL, shop.getLogoImgUrl());
+        contentValues.put(KEY_SHOP_LATITUDE, shop.getLatitude());
+        contentValues.put(KEY_SHOP_LONGITUDE, shop.getLongitude());
+        contentValues.put(KEY_SHOP_NAME, shop.getName());
+        contentValues.put(KEY_SHOP_URL, shop.getUrl());
+
+        return contentValues;
+    }
+
     @Override
-    public void update(long id, @NonNull Shop shop) {
-        if (shop == null) {
-            return;
-        }
+    public void update(long id, @NonNull Shop data) {
 
-        DBHelper db = DBHelper.getInstance(context.get());
-
-        db.getWritableDatabase().update(TABLE_SHOP, this.getContentValues(shop), KEY_SHOP_ID + "=" + id, null);
-
-        db.close();
-        db=null;
     }
 
     @Override
     public void delete(long id) {
-        DBHelper db = DBHelper.getInstance(context.get());
+        db.delete(TABLE_SHOP, KEY_SHOP_ID + " = " + id, null);  // 1st way
+        // db.delete(TABLE_SHOP, KEY_SHOP_ID + " = ?", new String[]{ "" + id });  // 2nd way
+        //db.delete(TABLE_SHOP, KEY_SHOP_ID + " = ? AND " + KEY_SHOP_NAME + "= ?" ,
+        //        new String[]{ "" + id, "pepito" });  // 2nd way
 
-        db.getWritableDatabase().delete(DBConstants.TABLE_SHOP,  DBConstants.KEY_SHOP_ID + " = " + id, null);
-
-        db.close();
-        db=null;
     }
 
     @Override
     public void deleteAll() {
-        DBHelper db = DBHelper.getInstance(context.get());
-
-        db.getWritableDatabase().delete(DBConstants.TABLE_SHOP,  null, null);
-
-        db.close();
-        db=null;
+        db.delete(TABLE_SHOP, null, null);
     }
 
-    public static ContentValues getContentValues(Shop shop) {
-        ContentValues content = new ContentValues();
-        content.put(KEY_SHOP_NAME, shop.getName());
-        //content.put(KEY_NOTEBOOK_ID, shop.getId());
-        content.put(KEY_SHOP_ADDRESS, shop.getAddress());
-        content.put(KEY_SHOP_DESCRIPTION, shop.getDescription());
-
-        return content;
+    @Nullable
+    @Override
+    public Cursor queryCursor() {
+        Cursor c = db.query(TABLE_SHOP, ALL_COLUMNS, null, null, null, null, KEY_SHOP_ID);
+        if (c != null && c.getCount() > 0) {
+            c.moveToFirst();
+        }
+        return c;
     }
 
+    @Override
+    public @Nullable Shop query(final long id) {
+        Cursor c = db.query(TABLE_SHOP, ALL_COLUMNS, KEY_SHOP_ID + " = " + id, null, null, null, KEY_SHOP_ID);
 
-    // convenience method
-    public static Shop shopFromCursor(Cursor c) {
-        assert c != null;
+        if (c != null && c.getCount() == 1) {
+            c.moveToFirst();
+        } else {
+            return null;
+        }
 
-        long id = c.getInt(c.getColumnIndex(KEY_SHOP_ID));
-        Shop shop = new Shop(id, c.getString(c.getColumnIndex(KEY_SHOP_NAME)));
-
-
+        Shop shop = getShop(c);
 
         return shop;
     }
 
-    public @NonNull Cursor queryCursor() {
-        // select
-        DBHelper db = DBHelper.getInstance(context.get());
+    @NonNull
+    private Shop getShop(Cursor c) {
+        long identifier = c.getLong(c.getColumnIndex(KEY_SHOP_ID));
+        String name = c.getString(c.getColumnIndex(KEY_SHOP_NAME));
+        Shop shop = new Shop(identifier, name);
 
-        Cursor c = db.getReadableDatabase().query(TABLE_SHOP, allColumns, null, null, null, null, null);
-
-        return c;
+        shop.setAddress(c.getString(c.getColumnIndex(KEY_SHOP_ADDRESS)));
+        shop.setDescription(c.getString(c.getColumnIndex(KEY_SHOP_DESCRIPTION)));
+        shop.setImageUrl(c.getString(c.getColumnIndex(KEY_SHOP_IMAGE_URL)));
+        shop.setLogoImgUrl(c.getString(c.getColumnIndex(KEY_SHOP_LOGO_IMAGE_URL)));
+        shop.setLatitude(c.getFloat(c.getColumnIndex(KEY_SHOP_LATITUDE)));
+        shop.setLongitude(c.getFloat(c.getColumnIndex(KEY_SHOP_LONGITUDE)));
+        shop.setUrl(c.getString(c.getColumnIndex(KEY_SHOP_URL)));
+        return shop;
     }
 
-
-    /**
-     * Returns a Notebook object from its id
-     * @param id - the notebook id in db
-     * @return Notebook object if found, null otherwise
-     */
+    @Nullable
     @Override
-    public @Nullable
-    Shop query(long id) {
-        Shop notebook = null;
+    public List<Shop> query() {
+        Cursor c = queryCursor();
 
-        DBHelper db = DBHelper.getInstance(context.get());
-
-        String where = KEY_SHOP_ID + "=" + id;
-        Cursor c = db.getReadableDatabase().query(TABLE_SHOP, allColumns, where, null, null, null, null);
-        if (c != null) {
-            if (c.getCount() > 0) {
-                c.moveToFirst();
-                notebook = shopFromCursor(c);
-            }
+        if (c == null || !c.moveToFirst()) {
+            return null;
         }
-        c.close();
-        db.close();
-        return notebook;
+
+        List<Shop> shops = new LinkedList<>();
+
+        while (c.moveToNext()) {
+            Shop shop = getShop(c);
+            shops.add(shop);
+        }
+
+        return shops;
     }
-
-
-
 }

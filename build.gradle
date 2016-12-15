@@ -21,3 +21,8 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+// Add this to your build.gradle
+task buildscriptDependencies << {
+    buildscript.configurations.classpath.each { println it }
+}

@@ -12,10 +12,21 @@ import java.util.LinkedList;
 import java.util.List;
 
 import io.keepcoding.madridguide.model.Shop;
+import io.keepcoding.madridguide.model.db.DAOPersistable;
 
-import static io.keepcoding.madridguide.manager.db.DBConstants.*;
+import static io.keepcoding.madridguide.manager.db.DBConstants.ALL_COLUMNS;
+import static io.keepcoding.madridguide.manager.db.DBConstants.KEY_SHOP_ADDRESS;
+import static io.keepcoding.madridguide.manager.db.DBConstants.KEY_SHOP_DESCRIPTION;
+import static io.keepcoding.madridguide.manager.db.DBConstants.KEY_SHOP_ID;
+import static io.keepcoding.madridguide.manager.db.DBConstants.KEY_SHOP_IMAGE_URL;
+import static io.keepcoding.madridguide.manager.db.DBConstants.KEY_SHOP_LATITUDE;
+import static io.keepcoding.madridguide.manager.db.DBConstants.KEY_SHOP_LOGO_IMAGE_URL;
+import static io.keepcoding.madridguide.manager.db.DBConstants.KEY_SHOP_LONGITUDE;
+import static io.keepcoding.madridguide.manager.db.DBConstants.KEY_SHOP_NAME;
+import static io.keepcoding.madridguide.manager.db.DBConstants.KEY_SHOP_URL;
+import static io.keepcoding.madridguide.manager.db.DBConstants.TABLE_SHOP;
 
-public class ShopDAO implements io.keepcoding.madridguide.manager.db.DAOPersistable<Shop> {
+public class ShopDAO implements DAOPersistable<Shop> {
     private WeakReference<Context> context;
     private DBHelper dbHelper;
     private SQLiteDatabase db;
@@ -76,8 +87,8 @@ public class ShopDAO implements io.keepcoding.madridguide.manager.db.DAOPersista
     }
 
     @Override
-    public void delete(long id) {
-        db.delete(TABLE_SHOP, KEY_SHOP_ID + " = " + id, null);  // 1st way
+    public int delete(long id) {
+        return db.delete(TABLE_SHOP, KEY_SHOP_ID + " = " + id, null);  // 1st way
         // db.delete(TABLE_SHOP, KEY_SHOP_ID + " = ?", new String[]{ "" + id });  // 2nd way
         //db.delete(TABLE_SHOP, KEY_SHOP_ID + " = ? AND " + KEY_SHOP_NAME + "= ?" ,
         //        new String[]{ "" + id, "pepito" });  // 2nd way

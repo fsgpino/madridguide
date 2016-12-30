@@ -10,18 +10,13 @@ import android.view.ViewGroup;
 import io.keepcoding.madridguide.R;
 import io.keepcoding.madridguide.model.Shop;
 import io.keepcoding.madridguide.model.Shops;
+import io.keepcoding.madridguide.util.OnElementClick;
 import io.keepcoding.madridguide.views.ShopRowViewHolder;
 
 public class ShopsAdapter extends RecyclerView.Adapter<ShopRowViewHolder> {
 
     private Shops shops;
     private LayoutInflater layoutInflater;
-
-    // Listener interface
-
-    public interface OnElementClick<Note> {
-        public void clickedOn(Note note, int position);
-    }
 
     private OnElementClick<Shop> listener;
 

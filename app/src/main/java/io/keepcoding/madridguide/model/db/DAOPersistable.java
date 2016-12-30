@@ -1,4 +1,4 @@
-package io.keepcoding.madridguide.manager.db;
+package io.keepcoding.madridguide.model.db;
 
 import android.database.Cursor;
 import android.support.annotation.NonNull;
@@ -9,7 +9,7 @@ import java.util.List;
 public interface DAOPersistable<T> {
     long insert(final @NonNull T data);
     void update(final long id, final @NonNull T data);
-    void delete(final long id);
+    int delete(final long id);
     void deleteAll();
     @Nullable Cursor queryCursor();
     T query(final long id);

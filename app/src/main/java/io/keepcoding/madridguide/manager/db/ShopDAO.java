@@ -12,7 +12,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import io.keepcoding.madridguide.model.Shop;
-import io.keepcoding.madridguide.model.db.DAOPersistable;
 
 import static io.keepcoding.madridguide.manager.db.DBConstants.ALL_COLUMNS;
 import static io.keepcoding.madridguide.manager.db.DBConstants.KEY_SHOP_ADDRESS;
@@ -66,20 +65,41 @@ public class ShopDAO implements DAOPersistable<Shop> {
         return id;
     }
 
-    private ContentValues getContentValues(Shop shop) {
-        ContentValues contentValues = new ContentValues();
+    public static @NonNull ContentValues getContentValues(final @NonNull Shop shop) {
+        final ContentValues contentValues = new ContentValues();
 
+        if (shop == null) {
+            return contentValues;
+        }
+
+        contentValues.put(KEY_SHOP_NAME, shop.getName());
         contentValues.put(KEY_SHOP_ADDRESS, shop.getAddress());
         contentValues.put(KEY_SHOP_DESCRIPTION, shop.getDescription());
         contentValues.put(KEY_SHOP_IMAGE_URL, shop.getImageUrl());
         contentValues.put(KEY_SHOP_LOGO_IMAGE_URL, shop.getLogoImgUrl());
         contentValues.put(KEY_SHOP_LATITUDE, shop.getLatitude());
         contentValues.put(KEY_SHOP_LONGITUDE, shop.getLongitude());
-        contentValues.put(KEY_SHOP_NAME, shop.getName());
         contentValues.put(KEY_SHOP_URL, shop.getUrl());
 
         return contentValues;
     }
+
+    public static @NonNull Shop getShopFromContentValues(final @NonNull ContentValues contentValues) {
+        final Shop shop = new Shop(1, "");
+
+        //shop.setId(contentValues.getAsInteger(KEY_SHOP_ID));
+        shop.setName(contentValues.getAsString(KEY_SHOP_NAME));
+        shop.setAddress(contentValues.getAsString(KEY_SHOP_ADDRESS));
+        shop.setDescription(contentValues.getAsString(KEY_SHOP_DESCRIPTION));
+        shop.setImageUrl(contentValues.getAsString(KEY_SHOP_IMAGE_URL));
+        shop.setLogoImgUrl(contentValues.getAsString(KEY_SHOP_LOGO_IMAGE_URL));
+        shop.setUrl(contentValues.getAsString(KEY_SHOP_URL));
+        shop.setLatitude(contentValues.getAsFloat(KEY_SHOP_LATITUDE));
+        shop.setLongitude(contentValues.getAsFloat(KEY_SHOP_LONGITUDE));
+
+        return shop;
+    }
+
 
     @Override
     public void update(long id, @NonNull Shop data) {
@@ -158,5 +178,13 @@ public class ShopDAO implements DAOPersistable<Shop> {
         }
 
         return shops;
+    }
+
+    public Cursor queryCursor(long id) {
+        Cursor c = db.query(TABLE_SHOP, ALL_COLUMNS, "ID = " + id, null, null, null, KEY_SHOP_ID);
+        if (c != null && c.getCount() > 0) {
+            c.moveToFirst();
+        }
+        return c;
     }
 }

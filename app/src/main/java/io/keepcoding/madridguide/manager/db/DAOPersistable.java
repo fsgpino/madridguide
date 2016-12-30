@@ -1,4 +1,4 @@
-package io.keepcoding.madridguide.model.db;
+package io.keepcoding.madridguide.manager.db;
 
 import android.database.Cursor;
 import android.support.annotation.NonNull;

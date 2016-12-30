@@ -10,4 +10,17 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="io.keepcoding.madridguide.activities.ShopDetailActivity">
 
+    <TextView
+        android:id="@+id/activity_shop_detail_shop_name_text"
+        tools:text="El Corte Inglés"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+
+    <ImageView
+        android:id="@+id/activity_shop_detail_shop_logo_image"
+        android:layout_width="80dp"
+        android:layout_height="80dp" />
+
 </RelativeLayout>

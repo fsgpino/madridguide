@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import io.keepcoding.madridguide.model.Shop;
+import io.keepcoding.madridguide.model.Shops;
 
 import static io.keepcoding.madridguide.manager.db.DBConstants.ALL_COLUMNS;
 import static io.keepcoding.madridguide.manager.db.DBConstants.KEY_SHOP_ADDRESS;
@@ -100,7 +101,6 @@ public class ShopDAO implements DAOPersistable<Shop> {
         return shop;
     }
 
-
     @Override
     public void update(long id, @NonNull Shop data) {
 
@@ -146,7 +146,7 @@ public class ShopDAO implements DAOPersistable<Shop> {
     }
 
     @NonNull
-    private Shop getShop(Cursor c) {
+    public static Shop getShop(Cursor c) {
         long identifier = c.getLong(c.getColumnIndex(KEY_SHOP_ID));
         String name = c.getString(c.getColumnIndex(KEY_SHOP_NAME));
         Shop shop = new Shop(identifier, name);
@@ -172,10 +172,11 @@ public class ShopDAO implements DAOPersistable<Shop> {
 
         List<Shop> shops = new LinkedList<>();
 
-        while (c.moveToNext()) {
+        c.moveToFirst();
+        do {
             Shop shop = getShop(c);
             shops.add(shop);
-        }
+        } while (c.moveToNext());
 
         return shops;
     }
@@ -186,5 +187,17 @@ public class ShopDAO implements DAOPersistable<Shop> {
             c.moveToFirst();
         }
         return c;
+    }
+
+    @NonNull
+    public static Shops getShops(Cursor data) {
+        List<Shop> shopList = new LinkedList<>();
+
+        while (data.moveToNext()) {
+            Shop shop = ShopDAO.getShop(data);
+            shopList.add(shop);
+        }
+
+        return Shops.build(shopList);
     }
 }

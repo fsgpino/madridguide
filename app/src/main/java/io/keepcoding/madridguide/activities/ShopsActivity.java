@@ -67,5 +67,4 @@ public class ShopsActivity extends AppCompatActivity implements LoaderManager.Lo
     public void onLoaderReset(Loader<Cursor> loader) {
 
     }
-
 }

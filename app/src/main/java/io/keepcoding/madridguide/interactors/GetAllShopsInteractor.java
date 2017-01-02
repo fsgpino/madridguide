@@ -10,7 +10,7 @@ import io.keepcoding.madridguide.model.Shop;
 import io.keepcoding.madridguide.model.Shops;
 import io.keepcoding.madridguide.model.mappers.ShopEntityShopMapper;
 
-public class GetAllShopsInteractor {
+public class GetAllShopsInteractor implements IGetAllShopsInteractor {
     public void execute(final Context context, final GetAllShopsInteractorResponse response) {
         NetworkManager networkManager = new NetworkManager(context);
         networkManager.getShopsFromServer(new NetworkManager.GetShopsListener() {

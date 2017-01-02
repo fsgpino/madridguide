@@ -318,3 +318,99 @@ loader.initLoader(0, null, this);
 --- v0.5
 
 
+# Uso de Mapas de Google en nuestra App
+
+* comprobar que tenemos Google Play Services bajado
+* add to build gradle
+
+```
+    compile 'com.google.android.gms:play-services-maps:7.5.0'
+
+```
+* Cómo registrar las API keys
+	* registrar en Google las APIs, generando las firmas por consola
+	* 4D:0B:CB:E7:7F:10:50:09:F0:B6:19:BA:D1:E1:79:DB:79:90:53:FD;io.mypackage
+	* Añadir a manifest (dentro del tag <application>)
+		
+```xml
+ 	<!-- Google Maps API Key -->
+    <meta-data
+        android:name="com.google.android.maps.v2.API_KEY"
+        android:value="" />
+
+
+	<meta-data
+       android:name="com.google.android.gms.version"
+       android:value="@integer/google_play_services_version" />
+    
+```
+
+    * Añadir permisos a Manifest. Quitar los redudantes
+
+```xml
+    <!-- Google Maps begin -->
+
+    <permission
+        android:name="io.keepcoding.madridguide.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="io.keepcoding.madridguide.permission.MAPS_RECEIVE" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!-- Required to show current location -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <!-- Required OpenGL ES 2.0. for Maps V2 -->
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
+    <!-- Google Maps END -->
+
+
+```
+
+
+    * Añadimos al layout de activity_shops el fragment del mapa
+
+    	* OJO: SupportMap
+
+```
+<fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        />
+
+```
+
+
+    * Poniendo pins en el mapa
+
+---
+
+# Servicio
+
+* Crear un servicio que nos avise de si estamos en la zona GPS donde se creó una nota
+* el servicio se arrancará con la App.
+* al iniciarse, imprime una notificación
+	* esta notificación contiene un pending intent para lanzar nuestra pantalla main
+* acceso al servicio a través de la clase de la App
+* parar el servicio desde una opción de menú
+
+* cada 5 seg el servicio comprueba y si estamos dentro de un radio de 1000 m de una nota nos avisa.
+	* posteando notificaciones
+		* mensajes en el área de notificaciones
+		* encendiendo los LEDs del dispositivo
+    
+
+    OLVIDADO: al actualizar un registro, cambiar fecha de actualización, ordenar por fecha de actualización
+
+
+---

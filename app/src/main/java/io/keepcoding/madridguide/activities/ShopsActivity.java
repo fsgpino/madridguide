@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import io.keepcoding.madridguide.R;
 import io.keepcoding.madridguide.fragments.ShopsFragment;
+import io.keepcoding.madridguide.interactors.GetAllShopsFromLocalCacheInteractor;
 import io.keepcoding.madridguide.manager.db.DBConstants;
 import io.keepcoding.madridguide.manager.db.ShopDAO;
 import io.keepcoding.madridguide.manager.db.provider.MadridGuideProvider;
@@ -31,7 +32,23 @@ public class ShopsActivity extends AppCompatActivity implements LoaderManager.Lo
         shopsFragment = (ShopsFragment) getFragmentManager().findFragmentById(R.id.activity_shops_fragment_shops);
 
         LoaderManager loaderManager = getSupportLoaderManager();
-        loaderManager.initLoader(0, null, this);
+        // loaderManager.initLoader(0, null, this);
+
+        // using interactors instead of Loaders
+        GetAllShopsFromLocalCacheInteractor interactor = new GetAllShopsFromLocalCacheInteractor();
+        interactor.execute(this, new GetAllShopsFromLocalCacheInteractor.OnGetAllShopsFromLocalCacheInteractorCompletion() {
+            @Override
+            public void completion(Shops shops) {
+                shopsFragment.setListener(new OnElementClick<Shop>() {
+                    @Override
+                    public void clickedOn(@NonNull Shop shop, int position) {
+                        Navigator.navigateFromShopsActivityToShopDetailActivity(ShopsActivity.this, shop);
+                    }
+                });
+
+                shopsFragment.setShops(shops);
+            }
+        });
     }
 
     // Cursor Loaders using Content Provider
@@ -67,5 +84,4 @@ public class ShopsActivity extends AppCompatActivity implements LoaderManager.Lo
     public void onLoaderReset(Loader<Cursor> loader) {
 
     }
-
 }

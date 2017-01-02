@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
@@ -35,7 +34,7 @@ public class ShopRowViewHolder extends RecyclerView.ViewHolder {
         this.nameTextView.setText(shop.getName());
         Picasso.with(context.get())
                 .load(shop.getLogoImgUrl())
-                .networkPolicy(NetworkPolicy.OFFLINE)
+                //.networkPolicy(NetworkPolicy.OFFLINE)
                 .placeholder(android.R.drawable.ic_btn_speak_now)
                 .into(logoImageView);
     }

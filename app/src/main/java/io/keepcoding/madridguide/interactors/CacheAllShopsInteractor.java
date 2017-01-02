@@ -13,9 +13,9 @@ public class CacheAllShopsInteractor {
     }
 
     public void execute(final Context context, final Shops shops, final CacheAllShopsInteractorResponse response) {
-        //new Thread(new Runnable() {
-         //   @Override
-         //   public void run() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
                 ShopDAO dao = new ShopDAO(context);
 
                 boolean success = true;
@@ -31,7 +31,7 @@ public class CacheAllShopsInteractor {
                 if (response != null) {
                     response.response(success);
                 }
-          //  }
-        //}).start();
+            }
+        }).start();
     }
 }

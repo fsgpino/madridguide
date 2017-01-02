@@ -310,3 +310,11 @@ loader.initLoader(0, null, this);
 	* what is an Interactor
 	* how to model the API
 	* always call back on Main Thread
+	* create MainThread class
+
+- remove Cursor Loaders calls
+- use interactors to fetch & cache data
+
+--- v0.5
+
+

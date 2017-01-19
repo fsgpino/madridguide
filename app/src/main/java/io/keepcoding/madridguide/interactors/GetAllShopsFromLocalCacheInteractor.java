@@ -10,12 +10,7 @@ import io.keepcoding.madridguide.model.Shops;
 import io.keepcoding.madridguide.util.MainThread;
 
 public class GetAllShopsFromLocalCacheInteractor {
-
-    public interface  OnGetAllShopsFromLocalCacheInteractorCompletion {
-        public void completion(Shops shops);
-    }
-
-    public void execute(final Context context, final OnGetAllShopsFromLocalCacheInteractorCompletion completion) {
+    public void execute(final Context context, final OnGetAllElementsFromLocalCacheInteractorCompletion<Shops> completion) {
         new Thread(new Runnable() {
             @Override
             public void run() {

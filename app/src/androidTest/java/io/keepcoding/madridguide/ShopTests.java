@@ -9,6 +9,8 @@ public class ShopTests extends AndroidTestCase {
 
     public static final String SHOP = "shop";
     public static final String ADDRESS = "ADDRESS";
+    public static final String DESC = "DESC";
+    public static final String URL = "URL";
 
     public void testCanCreateAShop() {
         Shop sut = new Shop(0, SHOP);
@@ -24,11 +26,12 @@ public class ShopTests extends AndroidTestCase {
     public void testANewShopStoresDataInPropertiesCorrectly() {
         Shop sut = new Shop(11, SHOP)
                     .setAddress(ADDRESS)
-                    .setDescription("DESC")
-                    .setImageUrl("URL");
+                    .setDescription(DESC)
+                    .setUrl(URL);
 
         assertEquals(sut.getAddress(), ADDRESS);
-        assertEquals(sut.getDescription(), "DESC");
+        assertEquals(sut.getDescription(), DESC);
+        assertEquals(sut.getUrl(),URL);
 
     }
 }

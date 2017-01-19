@@ -19,9 +19,15 @@ import java.util.List;
 import io.keepcoding.madridguide.R;
 
 public class NetworkManager {
+
     public interface GetShopsListener {
         public void getShopEntitiesSuccess(List<ShopEntity> result);
         public void getShopEntitiesDidFail();
+    }
+
+    public interface GetActivitiesListener {
+        public void getActivityEntitiesSuccess(List<ActivityEntity> result);
+        public void getActivityEntitiesDidFail();
     }
 
     WeakReference<Context> context;
@@ -40,7 +46,7 @@ public class NetworkManager {
                     @Override
                     public void onResponse(String response) {
                         Log.d("JSON", response);
-                        List<ShopEntity> shopResponse = parseResponse(response);
+                        List<ShopEntity> shopResponse = parseShopsResponse(response);
                         if (listener != null) {
                             listener.getShopEntitiesSuccess(shopResponse);
                         }
@@ -58,7 +64,35 @@ public class NetworkManager {
         queue.add(request);
     }
 
-    private List<ShopEntity> parseResponse(String response) {
+    public void getActivitiesFromServer(final GetActivitiesListener listener) {
+        RequestQueue queue = Volley.newRequestQueue(context.get());
+        String url = context.get().getString(R.string.activities_url);
+
+        StringRequest request = new StringRequest(
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("JSON", response);
+                        List<ActivityEntity> activityResponse = parseActivitiesResponse(response);
+                        if (listener != null) {
+                            listener.getActivityEntitiesSuccess(activityResponse);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (listener != null) {
+                            listener.getActivityEntitiesDidFail();
+                        }
+                    }
+                }
+        );
+        queue.add(request);
+    }
+
+    private List<ShopEntity> parseShopsResponse(String response) {
         List<ShopEntity> result = null;
         try {
             Reader reader = new StringReader(response);
@@ -66,6 +100,21 @@ public class NetworkManager {
 
             ShopResponse shopResponse = gson.fromJson(reader, ShopResponse.class);
             result = shopResponse.result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    private List<ActivityEntity> parseActivitiesResponse(String response) {
+        List<ActivityEntity> result = null;
+        try {
+            Reader reader = new StringReader(response);
+            Gson gson = new GsonBuilder().create();
+
+            ActivityResponse activityResponse = gson.fromJson(reader, ActivityResponse.class);
+            result = activityResponse.result;
         } catch (Exception e) {
             e.printStackTrace();
         }

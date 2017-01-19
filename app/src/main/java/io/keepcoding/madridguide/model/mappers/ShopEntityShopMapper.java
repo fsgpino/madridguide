@@ -12,11 +12,17 @@ public class ShopEntityShopMapper {
 
         for (ShopEntity entity: shopEntities) {
             Shop shop = new Shop(entity.getId(), entity.getName());
+
+            shop.setImageUrl(entity.getImg());
+            shop.setLogoImgUrl(entity.getLogoImg());
+            shop.setAddress(entity.getAddress());
+            shop.setUrl(entity.getUrl());
+
             // detect current lang
             shop.setDescription(entity.getDescriptionEs());
-            shop.setLogoImgUrl(entity.getLogoImg());
 
-            // ...
+            shop.setLatitude(entity.getLatitude());
+            shop.setLongitude(entity.getLongitude());
 
             result.add(shop);
         }

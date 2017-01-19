@@ -10,8 +10,8 @@ import io.keepcoding.madridguide.model.Shop;
 import io.keepcoding.madridguide.model.Shops;
 import io.keepcoding.madridguide.model.mappers.ShopEntityShopMapper;
 
-public class GetAllShopsInteractor implements IGetAllShopsInteractor {
-    public void execute(final Context context, final GetAllShopsInteractorResponse response) {
+public class GetAllShopsInteractor implements IGetAllElementsInteractor<Shops> {
+    public void execute(final Context context, final GetAllElementsInteractorResponse<Shops> response) {
         NetworkManager networkManager = new NetworkManager(context);
         networkManager.getShopsFromServer(new NetworkManager.GetShopsListener() {
             @Override

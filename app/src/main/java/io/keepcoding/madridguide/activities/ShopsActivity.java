@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import io.keepcoding.madridguide.R;
 import io.keepcoding.madridguide.fragments.ShopsFragment;
 import io.keepcoding.madridguide.interactors.GetAllShopsFromLocalCacheInteractor;
+import io.keepcoding.madridguide.interactors.OnGetAllElementsFromLocalCacheInteractorCompletion;
 import io.keepcoding.madridguide.manager.db.DBConstants;
 import io.keepcoding.madridguide.manager.db.ShopDAO;
 import io.keepcoding.madridguide.manager.db.provider.MadridGuideProvider;
@@ -36,7 +37,7 @@ public class ShopsActivity extends AppCompatActivity implements LoaderManager.Lo
 
         // using interactors instead of Loaders
         GetAllShopsFromLocalCacheInteractor interactor = new GetAllShopsFromLocalCacheInteractor();
-        interactor.execute(this, new GetAllShopsFromLocalCacheInteractor.OnGetAllShopsFromLocalCacheInteractorCompletion() {
+        interactor.execute(this, new OnGetAllElementsFromLocalCacheInteractorCompletion<Shops>() {
             @Override
             public void completion(Shops shops) {
                 shopsFragment.setListener(new OnElementClick<Shop>() {
@@ -57,7 +58,7 @@ public class ShopsActivity extends AppCompatActivity implements LoaderManager.Lo
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         CursorLoader loader = new CursorLoader(this,
                 MadridGuideProvider.SHOPS_URI,
-                DBConstants.ALL_COLUMNS,            // projection
+                DBConstants.ALL_SHOP_COLUMNS,            // projection
                 null,                               // where
                 null,                               // campos del where
                 null                                // order

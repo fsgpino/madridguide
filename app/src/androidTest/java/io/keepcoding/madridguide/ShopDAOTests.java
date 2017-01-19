@@ -8,8 +8,8 @@ import java.util.List;
 import io.keepcoding.madridguide.manager.db.ShopDAO;
 import io.keepcoding.madridguide.model.Shop;
 
-
 public class ShopDAOTests extends AndroidTestCase {
+
     public static final String SHOP_TESTING_NAME = "Shop testing name";
     public static final String ADDRESS_TESTING = "Address testing";
 
@@ -68,8 +68,6 @@ public class ShopDAOTests extends AndroidTestCase {
             assertTrue(shop.getName().length() > 0);
         }
     }
-
-
 
     private int getCount(ShopDAO sut) {
         final Cursor cursor = sut.queryCursor();

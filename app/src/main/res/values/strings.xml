@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">MadridGuide</string>
     <string name="activity_main_button_shops_text">Shops</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="activity_main_button_activities_text">Activities</string>
 </resources>

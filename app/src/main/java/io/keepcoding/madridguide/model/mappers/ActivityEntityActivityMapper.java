@@ -19,7 +19,8 @@ public class ActivityEntityActivityMapper {
             activity.setUrl(entity.getUrl());
 
             // detect current lang
-            activity.setDescription(entity.getDescriptionEs());
+            activity.setDescription_es(entity.getDescriptionEs());
+            activity.setDescription_en(entity.getDescriptionEn());
 
             activity.setLatitude(entity.getLatitude());
             activity.setLongitude(entity.getLongitude());

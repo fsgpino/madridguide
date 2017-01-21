@@ -19,7 +19,8 @@ public class ShopEntityShopMapper {
             shop.setUrl(entity.getUrl());
 
             // detect current lang
-            shop.setDescription(entity.getDescriptionEs());
+            shop.setDescription_es(entity.getDescriptionEs());
+            shop.setDescription_en(entity.getDescriptionEn());
 
             shop.setLatitude(entity.getLatitude());
             shop.setLongitude(entity.getLongitude());

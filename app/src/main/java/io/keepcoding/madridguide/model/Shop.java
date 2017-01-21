@@ -9,7 +9,8 @@ public class Shop implements Serializable {
     private String logoImgUrl;
     private String address;
     private String url;
-    private String description;
+    private String description_es;
+    private String description_en;
     private float latitude;
     private float longitude;
 
@@ -75,12 +76,21 @@ public class Shop implements Serializable {
         return this;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDescription_es() {
+        return description_es;
     }
 
-    public Shop setDescription(String description) {
-        this.description = description;
+    public Shop setDescription_es(String description_es) {
+        this.description_es = description_es;
+        return this;
+    }
+
+    public String getDescription_en() {
+        return description_en;
+    }
+
+    public Shop setDescription_en(String description_en) {
+        this.description_en = description_en;
         return this;
     }
 

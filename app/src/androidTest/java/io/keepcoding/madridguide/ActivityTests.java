@@ -25,11 +25,11 @@ public class ActivityTests extends AndroidTestCase {
     public void testANewActivityStoresDataInPropertiesCorrectly() {
         Activity sut = new Activity(11, ACTIVITY)
                 .setAddress(ADDRESS)
-                .setDescription(DESC)
+                .setDescription_es(DESC)
                 .setUrl(URL);
 
         assertEquals(sut.getAddress(), ADDRESS);
-        assertEquals(sut.getDescription(), DESC);
+        assertEquals(sut.getDescription_es(), DESC);
         assertEquals(sut.getUrl(),URL);
     }
 

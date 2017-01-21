@@ -40,6 +40,11 @@ public class Activities implements IElementsIterate<Activity>, IElementsUpdate<A
     }
 
     @Override
+    public int indexOf(Activity activity) {
+        return this.activities.indexOf(activity);
+    }
+
+    @Override
     public @NonNull  List<Activity> allElements() {
         return this.activities;
     }

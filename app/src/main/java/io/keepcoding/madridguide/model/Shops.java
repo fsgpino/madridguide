@@ -39,6 +39,11 @@ public class Shops implements IElementsIterate<Shop>, IElementsUpdate<Shop> {
     }
 
     @Override
+    public int indexOf(Shop shop) {
+        return this.shops.indexOf(shop);
+    }
+
+    @Override
     public @NonNull  List<Shop> allElements() {
         return this.shops;
     }

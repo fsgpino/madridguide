@@ -65,7 +65,8 @@ public class ShopDAO implements DAOPersistable<Shop> {
 
         contentValues.put(KEY_SHOP_NAME, shop.getName());
         contentValues.put(KEY_SHOP_ADDRESS, shop.getAddress());
-        contentValues.put(KEY_SHOP_DESCRIPTION, shop.getDescription());
+        contentValues.put(KEY_SHOP_DESCRIPTION_ES, shop.getDescription_es());
+        contentValues.put(KEY_SHOP_DESCRIPTION_EN, shop.getDescription_en());
         contentValues.put(KEY_SHOP_IMAGE_URL, shop.getImageUrl());
         contentValues.put(KEY_SHOP_LOGO_IMAGE_URL, shop.getLogoImgUrl());
         contentValues.put(KEY_SHOP_LATITUDE, shop.getLatitude());
@@ -81,7 +82,8 @@ public class ShopDAO implements DAOPersistable<Shop> {
         //shop.setId(contentValues.getAsInteger(KEY_SHOP_ID));
         shop.setName(contentValues.getAsString(KEY_SHOP_NAME));
         shop.setAddress(contentValues.getAsString(KEY_SHOP_ADDRESS));
-        shop.setDescription(contentValues.getAsString(KEY_SHOP_DESCRIPTION));
+        shop.setDescription_es(contentValues.getAsString(KEY_SHOP_DESCRIPTION_ES));
+        shop.setDescription_en(contentValues.getAsString(KEY_SHOP_DESCRIPTION_EN));
         shop.setImageUrl(contentValues.getAsString(KEY_SHOP_IMAGE_URL));
         shop.setLogoImgUrl(contentValues.getAsString(KEY_SHOP_LOGO_IMAGE_URL));
         shop.setUrl(contentValues.getAsString(KEY_SHOP_URL));
@@ -142,7 +144,8 @@ public class ShopDAO implements DAOPersistable<Shop> {
         Shop shop = new Shop(identifier, name);
 
         shop.setAddress(c.getString(c.getColumnIndex(KEY_SHOP_ADDRESS)));
-        shop.setDescription(c.getString(c.getColumnIndex(KEY_SHOP_DESCRIPTION)));
+        shop.setDescription_es(c.getString(c.getColumnIndex(KEY_SHOP_DESCRIPTION_ES)));
+        shop.setDescription_en(c.getString(c.getColumnIndex(KEY_SHOP_DESCRIPTION_EN)));
         shop.setImageUrl(c.getString(c.getColumnIndex(KEY_SHOP_IMAGE_URL)));
         shop.setLogoImgUrl(c.getString(c.getColumnIndex(KEY_SHOP_LOGO_IMAGE_URL)));
         shop.setLatitude(c.getFloat(c.getColumnIndex(KEY_SHOP_LATITUDE)));

@@ -1,5 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MadridGuide</string>
+    <string name="app_name">Madrid Guide</string>
     <string name="activity_main_button_shops_text">Shops</string>
     <string name="activity_main_button_activities_text">Activities</string>
+    <string name="description">DESCRIPTION</string>
+    <string name="address">ADDRESS</string>
+    <string name="no_internet_connection">Internet Unavaliable</string>
 </resources>

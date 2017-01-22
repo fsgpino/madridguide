@@ -1,12 +1,13 @@
 package io.keepcoding.madridguide.activities;
 
 import android.database.Cursor;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -28,6 +29,7 @@ import io.keepcoding.madridguide.model.Activities;
 import io.keepcoding.madridguide.model.Activity;
 import io.keepcoding.madridguide.navigator.Navigator;
 import io.keepcoding.madridguide.util.OnElementClick;
+import io.keepcoding.madridguide.views.MakerInfoView;
 
 public class ActivitiesActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -61,6 +63,8 @@ public class ActivitiesActivity extends AppCompatActivity implements LoaderManag
                 setUpMap(activities);
             }
         });
+
+        setTitle(R.string.activity_main_button_activities_text);
     }
 
     // Cursor Loaders using Content Provider
@@ -90,6 +94,7 @@ public class ActivitiesActivity extends AppCompatActivity implements LoaderManag
         });
 
         activitiesFragment.setActivities(activities);
+        setUpMap(activities);
     }
 
     @Override
@@ -99,47 +104,61 @@ public class ActivitiesActivity extends AppCompatActivity implements LoaderManag
 
     private void setUpMap(final Activities activities) {
 
-        final GoogleMap googleMap = mapFragment.getMap();
+        GoogleMap googleMap = mapFragment.getMap();
 
+        // Check if Maps is avaliable
         if (googleMap == null) {
-            Toast.makeText(getApplicationContext(), "Sorry! unable to create maps", Toast.LENGTH_SHORT)
-                    .show();
+            Toast.makeText(getApplicationContext(), "Maps no avaliable!", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        // Map config
         googleMap.setMyLocationEnabled(true);
-
-        if (activities == null) {
-            return;
-        }
-
-        for (Activity activity : activities.allElements()) {
-            // create marker
-            MarkerOptions marker = new MarkerOptions().position(new LatLng(activity.getLatitude(), activity.getLongitude())).title(activity.getName());
-            marker.snippet(activity.getLogoImgUrl() + "activity:" + activities.indexOf(activity));
-
-            // adding marker
-            googleMap.addMarker(marker);
-        }
-
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        googleMap.getUiSettings().setMyLocationButtonEnabled(false);
         googleMap.getUiSettings().setZoomGesturesEnabled(false);
         googleMap.getUiSettings().setZoomControlsEnabled(false);
         googleMap.getUiSettings().setAllGesturesEnabled(false);
         googleMap.getUiSettings().setMapToolbarEnabled(false);
-        //googleMap.setInfoWindowAdapter(new ActivityInfoWindowAdapter(getApplicationContext()));
-        googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+
+        // Setting position camera
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(new LatLng(Double.parseDouble(getString(R.string.madrid_latitude)), Double.parseDouble(getString(R.string.madrid_longitude))))
+                .zoom(Integer.parseInt(getString(R.string.map_zoom)))
+                .build();
+        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+        // Create Markers in map
+        for (Activity activity : activities.allElements()) {
+            MarkerOptions marker = new MarkerOptions().position(new LatLng(activity.getLatitude(), activity.getLongitude())).title(activity.getName());
+            marker.snippet(String.valueOf(activities.indexOf(activity)));
+            googleMap.addMarker(marker);
+        }
+
+        // Set info view to maker
+        googleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
             @Override
-            public void onInfoWindowClick(Marker marker) {
-                long position = Integer.parseInt(marker.getSnippet().split("activity:")[1]);
-                Activity activity = activities.get(position);
-                Navigator.navigateFromActivitiesActivityToActivityDetailActivity(ActivitiesActivity.this, activity);
+            public View getInfoWindow(Marker marker) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+                Activity activity = activities.get(Integer.parseInt(marker.getSnippet()));
+                MakerInfoView makerInfoView = new MakerInfoView(getApplicationContext());
+                makerInfoView.setUp(activity.getLogoImgUrl(),activity.getName());
+                return makerInfoView;
             }
         });
 
-
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(
-                new LatLng(40.4189886, -3.7047680000000500)).zoom(12).build();
-        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
+        // Action to click in maker info view
+        googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Activity activity = activities.get(Integer.parseInt(marker.getSnippet()));
+                Navigator.navigateFromActivitiesActivityToActivityDetailActivity(ActivitiesActivity.this, activity);
+            }
+        });
 
     }
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/maker_map_info_view"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/maker_map_info_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:text="Un saludito para mi mejor amiguito"
+        android:gravity="center"
+        android:textColor="@android:color/darker_gray"/>
+
+    <ImageView
+        android:id="@+id/maker_map_info_image_view"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        tools:src="@android:drawable/btn_plus"
+        />
+
+</RelativeLayout>

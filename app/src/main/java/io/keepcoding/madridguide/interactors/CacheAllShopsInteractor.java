@@ -14,6 +14,10 @@ public class CacheAllShopsInteractor {
             public void run() {
                 ShopDAO dao = new ShopDAO(context);
 
+                if (shops == null) {
+                    return;
+                }
+
                 boolean success = true;
                 for (Shop shop: shops.allElements()) {
                     success = dao.insert(shop) > 0;

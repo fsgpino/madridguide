@@ -69,7 +69,7 @@ public class DBConstants {
                     + KEY_SHOP_URL + " text,"
                     + KEY_SHOP_LATITUDE + " real,"
                     + KEY_SHOP_LONGITUDE + " real, "
-                    + KEY_SHOP_DESCRIPTION_ES + " text "
+                    + KEY_SHOP_DESCRIPTION_ES + " text, "
                     + KEY_SHOP_DESCRIPTION_EN + " text "
                     + ");";
 
@@ -84,7 +84,7 @@ public class DBConstants {
                     + KEY_ACTIVITY_URL + " text,"
                     + KEY_ACTIVITY_LATITUDE + " real,"
                     + KEY_ACTIVITY_LONGITUDE + " real, "
-                    + KEY_ACTIVITY_DESCRIPTION_ES + " text "
+                    + KEY_ACTIVITY_DESCRIPTION_ES + " text, "
                     + KEY_ACTIVITY_DESCRIPTION_EN + " text "
                     + ");";
 

@@ -14,6 +14,10 @@ public class CacheAllActivitiesInteractor {
             public void run() {
                 ActivityDAO dao = new ActivityDAO(context);
 
+                if (activities == null) {
+                    return;
+                }
+
                 boolean success = true;
                 for (Activity activity: activities.allElements()) {
                     success = dao.insert(activity) > 0;

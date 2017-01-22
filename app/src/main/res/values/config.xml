@@ -1,4 +1,8 @@
 <resources>
     <string name="shops_url">http://madrid-shops.com/json/getShops.php</string>
     <string name="activities_url">http://madrid-shops.com/json_new/getActivities.php</string>
+    <string name="madrid_latitude">40.423039</string>
+    <string name="madrid_longitude">-3.697570</string>
+    <string name="map_zoom">12</string>
+    <string name="cache_days_to_expire">7</string>
 </resources>

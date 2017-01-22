@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_shop_detail"
     android:layout_width="match_parent"
@@ -8,19 +8,62 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    android:weightSum="10"
     tools:context="io.keepcoding.madridguide.activities.ShopDetailActivity">
 
     <TextView
-        android:id="@+id/activity_shop_detail_shop_name_text"
-        tools:text="El Corte Inglés"
-        android:gravity="center"
-        android:textSize="20sp"
         android:layout_width="match_parent"
-        android:layout_height="50dp" />
+        android:layout_height="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:text="@string/description"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        />
 
-    <ImageView
-        android:id="@+id/activity_shop_detail_shop_logo_image"
-        android:layout_width="80dp"
-        android:layout_height="80dp" />
 
-</RelativeLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:scrollbars="vertical"
+        android:fillViewport="true"
+        android:layout_weight="3">
+
+        <TextView
+            android:id="@+id/activity_shop_detail_shop_description_text"
+            tools:text="orem ipsum dolor sit amet, consectetur adipiscing elit. Sed finibus nisl nec leo maximus mattis. Integer non rutrum tellus. Integer ut lobortis leo. Donec congue sed quam eget tempor. Nunc lacus diam, eleifend pulvinar elit non, cursus fringilla sem. Proin posuere ante nec diam varius tempor. "
+            android:textSize="12sp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </ScrollView>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:text="@string/address"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/activity_shop_detail_shop_address_text"
+        tools:text="Address example"
+        android:textSize="12sp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <fragment
+        android:id="@+id/activity_shop_detail_shop_map"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6" />
+
+</LinearLayout>

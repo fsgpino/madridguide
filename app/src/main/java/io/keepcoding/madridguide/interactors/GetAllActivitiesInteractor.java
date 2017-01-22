@@ -9,6 +9,7 @@ import io.keepcoding.madridguide.manager.net.ActivityEntity;
 import io.keepcoding.madridguide.model.Activity;
 import io.keepcoding.madridguide.model.Activities;
 import io.keepcoding.madridguide.model.mappers.ActivityEntityActivityMapper;
+import io.keepcoding.madridguide.util.CacheValidator;
 
 public class GetAllActivitiesInteractor implements IGetAllElementsInteractor<Activities> {
     public void execute(final Context context, final GetAllElementsInteractorResponse<Activities> response) {
@@ -20,6 +21,7 @@ public class GetAllActivitiesInteractor implements IGetAllElementsInteractor<Act
                 if (response != null) {
                     response.response(Activities.build(activities));
                 }
+                CacheValidator.resetActivitiesCacheTime(context);
             }
 
             @Override
